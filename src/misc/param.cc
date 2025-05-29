@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <pwd.h>
+#include <env.h>
 
 const char* userHomeDir() {
   struct passwd *pwUser = getpwuid(getuid());
@@ -64,6 +65,8 @@ static void initEnvFunc() {
   }
   snprintf(confFilePath, sizeof(confFilePath), "/etc/nccl.conf");
   setEnvFile(confFilePath);
+  ncclEnvPlugininitEnv(NCCL_MAJOR, NCCL_MINOR, NCCL_PATCH, NCCL_SUFFIX, "nccl");
+  ncclResetDebugInit();
 }
 
 void initEnv() {

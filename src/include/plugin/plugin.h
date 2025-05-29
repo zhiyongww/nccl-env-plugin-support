@@ -13,6 +13,7 @@ void* ncclOpenNetPluginLib(const char* name);
 void* ncclOpenTunerPluginLib(const char* name);
 void* ncclOpenProfilerPluginLib(const char* name);
 void* ncclGetNetPluginLib(void);
+void* ncclOpenEnvPluginLib(const char* name);
 ncclResult_t ncclClosePluginLib(void* handle);
 
 #endif

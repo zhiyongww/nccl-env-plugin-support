@@ -37,7 +37,7 @@ static __thread int tid = -1;
 static void ncclDebugInit() {
   pthread_mutex_lock(&ncclDebugLock);
   if (ncclDebugLevel != -1) { pthread_mutex_unlock(&ncclDebugLock); return; }
-  const char* nccl_debug = ncclGetEnv("NCCL_DEBUG");
+  const char* nccl_debug = getenv("NCCL_DEBUG");
   int tempNcclDebugLevel = -1;
   if (nccl_debug == NULL) {
     tempNcclDebugLevel = NCCL_LOG_NONE;
@@ -57,7 +57,7 @@ static void ncclDebugInit() {
    * This can be a comma separated list such as INIT,COLL
    * or ^INIT,COLL etc
    */
-  const char* ncclDebugSubsysEnv = ncclGetEnv("NCCL_DEBUG_SUBSYS");
+  const char* ncclDebugSubsysEnv = getenv("NCCL_DEBUG_SUBSYS");
   if (ncclDebugSubsysEnv != NULL) {
     int invert = 0;
     if (ncclDebugSubsysEnv[0] == '^') { invert = 1; ncclDebugSubsysEnv++; }
@@ -109,7 +109,7 @@ static void ncclDebugInit() {
     free(ncclDebugSubsys);
   }
 
-  const char* ncclWarnSetDebugInfoEnv = ncclGetEnv("NCCL_WARN_ENABLE_DEBUG_INFO");
+  const char* ncclWarnSetDebugInfoEnv = getenv("NCCL_WARN_ENABLE_DEBUG_INFO");
   if (ncclWarnSetDebugInfoEnv != NULL && strlen(ncclWarnSetDebugInfoEnv) > 0) {
     int64_t value;
     errno = 0;
@@ -119,7 +119,7 @@ static void ncclDebugInit() {
   }
 
   // Determine which debug levels will have timestamps.
-  const char* timestamps = ncclGetEnv("NCCL_DEBUG_TIMESTAMP_LEVELS");
+  const char* timestamps = getenv("NCCL_DEBUG_TIMESTAMP_LEVELS");
   if (timestamps == nullptr) {
     ncclDebugTimestampLevels = (1<<NCCL_LOG_WARN);
   } else {
@@ -155,7 +155,7 @@ static void ncclDebugInit() {
   }
 
   // Store a copy of the timestamp format with space for the subseconds, if used.
-  const char* tsFormat = ncclGetEnv("NCCL_DEBUG_TIMESTAMP_FORMAT");
+  const char* tsFormat = getenv("NCCL_DEBUG_TIMESTAMP_FORMAT");
   if (tsFormat == nullptr) tsFormat = "[%F %T] ";
   ncclDebugTimestampSubsecondsStart = -1;
   // Find where the subseconds are in the format.
@@ -208,7 +208,7 @@ static void ncclDebugInit() {
    * then create the debug file. But don't bother unless the
    * NCCL_DEBUG level is > VERSION
    */
-  const char* ncclDebugFileEnv = ncclGetEnv("NCCL_DEBUG_FILE");
+  const char* ncclDebugFileEnv = getenv("NCCL_DEBUG_FILE");
   if (tempNcclDebugLevel > NCCL_LOG_VERSION && ncclDebugFileEnv != NULL) {
     int c = 0;
     char debugFn[PATH_MAX+1] = "";
